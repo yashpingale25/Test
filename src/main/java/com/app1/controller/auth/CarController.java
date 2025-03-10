@@ -1,13 +1,7 @@
 package com.app1.controller.auth;
 
-import com.app1.entity.cars.Brand;
-import com.app1.entity.cars.FuelType;
-import com.app1.entity.cars.Model;
-import com.app1.entity.cars.Transmission;
-import com.app1.payload.BrandDto;
-import com.app1.payload.FuelTypeDto;
-import com.app1.payload.ModelDto;
-import com.app1.payload.TransmissionDto;
+import com.app1.entity.cars.*;
+import com.app1.payload.*;
 import com.app1.service.CarService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +40,10 @@ public class CarController {
         return carService.addTransmissionType(transmissionDto);
     }
 
+    @PostMapping("/addYear")
+    public ResponseEntity<Year> addYear(@RequestBody YearDto yearDto){
+       return carService.addYear(yearDto);
+    }
 
 
 

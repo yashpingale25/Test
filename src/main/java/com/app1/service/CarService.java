@@ -1,17 +1,8 @@
 package com.app1.service;
 
-import com.app1.entity.cars.Brand;
-import com.app1.entity.cars.FuelType;
-import com.app1.entity.cars.Model;
-import com.app1.entity.cars.Transmission;
-import com.app1.payload.BrandDto;
-import com.app1.payload.FuelTypeDto;
-import com.app1.payload.ModelDto;
-import com.app1.payload.TransmissionDto;
-import com.app1.repository.BrandRepository;
-import com.app1.repository.FuelTypeRepository;
-import com.app1.repository.ModelRepository;
-import com.app1.repository.TransmissionRepository;
+import com.app1.entity.cars.*;
+import com.app1.payload.*;
+import com.app1.repository.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,15 +16,18 @@ public class CarService {
     private final FuelTypeRepository fuelTypeRepository;
     private final ModelRepository modelRepository;
     private final TransmissionRepository transmissionRepository;
+    private final YearRepository yearRepository;
 
     public CarService(BrandRepository brandRepository,
                       FuelTypeRepository fuelTypeRepository,
                       ModelRepository modelRepository,
-                      TransmissionRepository transmissionRepository) {
+                      TransmissionRepository transmissionRepository,
+                      YearRepository yearRepository) {
         this.brandRepository = brandRepository;
         this.fuelTypeRepository = fuelTypeRepository;
         this.modelRepository = modelRepository;
         this.transmissionRepository = transmissionRepository;
+        this.yearRepository = yearRepository;
     }
                //ADD BRANDS
     public ResponseEntity<Brand> addBrands(BrandDto brandDto) {
@@ -80,5 +74,18 @@ public class CarService {
         transmission.setType(transmissionDto.getType());
         Transmission savedTransmissionType =  transmissionRepository.save(transmission);
         return new ResponseEntity<>(savedTransmissionType , HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<Year> addYear(YearDto yearDto) {
+        Optional<Year> opYear =  yearRepository.findByYear(yearDto.getYear());
+        if(opYear.isPresent()){
+            throw new RuntimeException("YEAR ALREADY EXIST");
+        }
+        Year year = new Year();
+        year.setYear(yearDto.getYear());
+        Year savedYear = yearRepository.save(year);
+        return new ResponseEntity<Year>(savedYear , HttpStatus.CREATED);
+
+
     }
 }
